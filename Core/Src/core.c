@@ -3,6 +3,7 @@
 #include "main.h"
 
 #include "core.h"
+#include "curve.h"
 #include "led.h"
 #include "usb_debug.h"
 
@@ -31,27 +32,26 @@ bool core_init(void)
 
 void core_process(void)
 {
-
-	usb_printf("core_process\r\n");
-
-	HAL_GPIO_TogglePin(uLED1_GPIO_Port, uLED1_Pin);
-
 	if (pwm_value == 0)
-		step = 100;
+		step = 10;
 	else if (pwm_value == 1000)
-		step = -100;
+		step = -10;
+	else if (pwm_value == 500) {
+		usb_printf("core_process\r\n");
+	    HAL_GPIO_TogglePin(uLED1_GPIO_Port, uLED1_Pin);
+	}
 
 	pwm_value += step;
 
-	led_set(0, pwm_value);
-	led_set(1, pwm_value);
-	led_set(2, pwm_value);
-	led_set(3, pwm_value);
+	led_set(0, curve(pwm_value));
+	led_set(1, curve(pwm_value));
+	led_set(2, curve(pwm_value));
+	led_set(3, curve(pwm_value));
 
-	led_set(4, pwm_value);
-	led_set(5, pwm_value);
-	led_set(6, pwm_value);
-	led_set(7, pwm_value);
+	led_set(4, curve(pwm_value));
+	led_set(5, curve(pwm_value));
+	led_set(6, curve(pwm_value));
+	led_set(7, curve(pwm_value));
 
-	HAL_Delay(500);
+	HAL_Delay(10);
 }
