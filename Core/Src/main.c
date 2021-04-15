@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usb_debug.h"
 #include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -116,6 +117,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    HAL_GPIO_TogglePin(uLED1_GPIO_Port, uLED1_Pin);
+    HAL_Delay(500);
+    usb_printf("DMX USB test\r\n");
 
     /* USER CODE BEGIN 3 */
   }
