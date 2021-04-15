@@ -19,12 +19,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "usb_debug.h"
 #include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "core.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,8 +107,10 @@ int main(void)
   MX_TIM3_Init();
   MX_USART1_UART_Init();
   MX_USB_DEVICE_Init();
-  /* USER CODE BEGIN 2 */
 
+  /* USER CODE BEGIN 2 */
+  if (!core_init())
+    Error_Handler();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,10 +118,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    HAL_GPIO_TogglePin(uLED1_GPIO_Port, uLED1_Pin);
-    HAL_Delay(500);
-    usb_printf("DMX USB test\r\n");
-
+    core_process();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
