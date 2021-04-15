@@ -11,13 +11,6 @@ static led_timer[LEDS_NUMBER];
 
 void led_set(uint8_t led, uint16_t value)
 {
-	TIM_OC_InitTypeDef sConfigOC;
-
-	sConfigOC.OCMode = TIM_OCMODE_PWM1;
-	sConfigOC.Pulse = value;
-	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-
 	__HAL_TIM_SET_COMPARE(led_timer[led].handle, led_timer[led].channel,
 			      value);
 }
