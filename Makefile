@@ -193,6 +193,9 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 $(BUILD_DIR):
 	mkdir $@		
 
+flash:
+	st-flash --reset write $(BUILD_DIR)/$(TARGET).bin 0x8000000
+
 #######################################
 # clean up
 #######################################
