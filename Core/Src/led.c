@@ -1,7 +1,5 @@
 #include "led.h"
 
-#define LEDS_NUMBER 8
-
 struct led_timer {
 	uint32_t channel;
 	TIM_HandleTypeDef *handle;

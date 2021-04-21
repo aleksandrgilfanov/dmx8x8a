@@ -7,6 +7,8 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_hal_tim.h"
 
+#define LEDS_NUMBER 8
+
 bool led_init(uint8_t led, TIM_HandleTypeDef *htim, uint32_t channel);
 void led_set(uint8_t led, uint16_t value);
 
