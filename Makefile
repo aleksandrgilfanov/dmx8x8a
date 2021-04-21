@@ -146,6 +146,7 @@ CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2
+CFLAGS += -g3
 endif
 
 
