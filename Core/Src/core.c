@@ -5,6 +5,7 @@
 #include "core.h"
 #include "curve.h"
 #include "dmx_receiver.h"
+#include "encoder.h"
 #include "led.h"
 #include "usb_debug.h"
 
@@ -33,8 +34,9 @@ static unsigned char packet[DMX_MAX_SLOTS + 1];
 
 void core_process(void)
 {
-	int slots;
-	int led;
+	unsigned int slots;
+	unsigned int led;
+	unsigned int encoder_value;
 	unsigned int now = HAL_GetTick();
 
 	if (now - sec_tick > 1000) {
@@ -46,11 +48,14 @@ void core_process(void)
 	if ((slots = dmx_receive(packet)) > 0)
 		usb_dumppacket(packet, slots);
 
-	/* limit slots by leds channels (first byte is used for type) */
-	if (slots > LEDS_NUMBER + 1)
-		slots = LEDS_NUMBER + 1;
+	/* Encoder can be set to value from 000 to 999 */
+	encoder_value = encoder_get();
+
+	/* limit slots by leds channels (first slot is type) */
+	if (encoder_value == 0 || encoder_value > slots - LEDS_NUMBER)
+		return;
 
 	/* set first leds to first values from packet */
-	for (led = 0; led < slots - 1; led++)
-		led_set(led, curve(packet[led + 1]));
+	for (led = 0; led < LEDS_NUMBER; led++)
+		led_set(led, curve(packet[encoder_value + led]));
 }
