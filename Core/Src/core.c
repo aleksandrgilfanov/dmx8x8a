@@ -36,7 +36,7 @@ void core_process(void)
 {
 	unsigned int slots;
 	unsigned int led;
-	unsigned int encoder_value;
+	unsigned int channel;
 	unsigned int now = HAL_GetTick();
 
 	if (now - sec_tick > 1000) {
@@ -49,13 +49,13 @@ void core_process(void)
 		usb_dumppacket(packet, slots);
 
 	/* Encoder can be set to value from 000 to 999 */
-	encoder_value = encoder_get();
+	channel = encoder_get();
 
 	/* limit slots by leds channels (first slot is type) */
-	if (encoder_value == 0 || encoder_value > slots - LEDS_NUMBER)
+	if (channel == 0 || channel > slots - LEDS_NUMBER)
 		return;
 
 	/* set first leds to first values from packet */
 	for (led = 0; led < LEDS_NUMBER; led++)
-		led_set(led, curve(packet[encoder_value + led]));
+		led_set(led, curve(packet[channel + led]));
 }
