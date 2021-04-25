@@ -44,12 +44,14 @@ void core_process(void)
 		HAL_GPIO_TogglePin(uLED1_GPIO_Port, uLED1_Pin);
 	}
 
-	/* Receive and dump packet */
-	if ((slots = dmx_receive(packet)) > 0)
-		usb_dumppacket(packet, slots);
+	/* Blocking receive packet */
+	if ((slots = dmx_receive(packet)) == 0)
+		return;
 
 	/* Encoder can be set to value from 000 to 999 */
 	channel = encoder_get();
+
+	usb_dump(packet, slots, channel);
 
 	/* limit slots by leds channels (first slot is type) */
 	if (channel == 0 || channel > slots - LEDS_NUMBER)

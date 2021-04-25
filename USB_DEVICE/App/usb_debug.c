@@ -21,13 +21,13 @@ void usb_printf(char *fmt, ...)
 	CDC_Transmit_FS((uint8_t*)usb_buf, len);
 }
 
-void usb_dumppacket(uint8_t *src_packet, uint16_t len)
+void usb_dump(uint8_t *src_packet, uint16_t len, uint16_t channel)
 {
 	char *ptr = usb_buf;
 	uint16_t to_send;
 
-	ptr += sprintf(ptr, "[%lu] Dumping packet (type=%02X len=%d):",
-		       HAL_GetTick(), src_packet[0], len);
+	ptr += sprintf(ptr, "[%lu] ch=%03d, received(type=%02X len=%d):",
+		       HAL_GetTick(), channel, src_packet[0], len);
 
 	for (int i = 1; i < len; i++) {
 		if ((i % 16) == 1)
