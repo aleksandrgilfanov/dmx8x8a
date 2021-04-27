@@ -37,6 +37,7 @@ BUILD_DIR = build
 # C sources
 C_SOURCES =  \
 Core/Src/main.c \
+Core/Src/adc.c \
 Core/Src/core.c \
 Core/Src/curve.c \
 Core/Src/dmx_receiver.c \

@@ -2,6 +2,7 @@
 
 #include "main.h"
 
+#include "adc.h"
 #include "core.h"
 #include "curve.h"
 #include "dmx_receiver.h"
@@ -9,11 +10,30 @@
 #include "led.h"
 #include "usb_debug.h"
 
+#define ADC_CHANNELS 		2
+
+extern ADC_HandleTypeDef hadc1;
+
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 
+static uint16_t adc[ADC_CHANNELS];
+
+static void process_adc(uint16_t *data)
+{
+	uint8_t ch;
+
+	//HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+
+	for (ch = 0; ch < ADC_CHANNELS; ch++)
+		adc[ch] = data[ch];
+}
+
 bool core_init(void)
 {
+	if (!adc_init(&hadc1, ADC_CHANNELS, process_adc))
+		return false;
+
 	if (!led_init(0, &htim2, TIM_CHANNEL_1) ||
 	    !led_init(1, &htim2, TIM_CHANNEL_2) ||
 	    !led_init(2, &htim2, TIM_CHANNEL_3) ||
